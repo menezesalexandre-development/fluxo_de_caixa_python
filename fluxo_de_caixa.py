@@ -59,32 +59,47 @@ def start_app():
         add_button.pack(padx=10, pady=10)
 
     def del_empresa_window():
+        global app
         global empresa_csv_path
         global empresa_csv_table
         del_emp = CTkToplevel(app)
         del_emp.geometry("400x300")
 
-        def del_instance(filepath, nome_empresa):
-            global empresa_csv_path
-            global empresa_csv_table
-            deletar_empresa(filepath, nome_empresa)
-            del_emp.destroy()
-            app.destroy()
-            start_app()
-
         remove_title = CTkLabel(del_emp, text='Remover empresa', text_color='#fff', font=("Ubuntu Bold", 26))
         remove_title.pack(padx=10, pady=10)
-
-        list_empresas = CTkLabel(del_emp, text='Lista de empresas:', text_color='#fff', font=("Ubuntu Bold", 15))
-        list_empresas.pack(padx=1, pady=1)
 
         if not check_empresas(empresa_csv_path):
             no_empresas = CTkLabel(del_emp, text='Não há empresas cadastradas', text_color='#fff', font=("Ubuntu Bold", 12))
             no_empresas.pack(padx=1, pady=1)
         else:
-            for count in range(0, len(empresa_csv_table)):
-                inst_empresa = CTkButton(del_emp, text=empresa_csv_table["Empresa"][count], text_color='#fff', font=("Ubuntu Bold", 12), fg_color='#ff0000', command=lambda: del_instance(empresa_csv_path, empresa_csv_table["Empresa"][count]))
-                inst_empresa.pack(padx=1, pady=1)
+            aviso = CTkLabel(del_emp, text='AVISO: ESCREVA CORRETAMENTE O NOME DA EMPRESA!', text_color='#ff0000', font=("Ubuntu Bold", 12))
+            aviso.pack(padx=1, pady=1)
+
+            name_status = CTkLabel(del_emp, text='', text_color='#ff0000', font=("Ubuntu Bold", 12))
+            name_status.pack(padx=1, pady=1)
+
+            del_emp_entry = CTkEntry(del_emp, placeholder_text='Nome da empresa', fg_color="#fff", placeholder_text_color='#000', font=("Ubuntu Bold", 12), text_color="#000")
+            del_emp_entry.pack(padx=10, pady=10)
+
+            def del_empresa():
+                global app
+                global empresa_csv_path
+                global empresa_csv_table
+                del_instance = del_emp_entry.get()
+                del_emp_entry.delete(0, END)
+
+                if del_instance == '':
+                    name_status.configure(text='Campo obrigatório!')
+                elif 255 <= len(del_instance) <= 0:
+                    name_status.configure(text='Digite entre 1 e 255 caracteres!')
+                else:
+                    deletar_empresa(empresa_csv_path, del_instance)
+                    del_emp.destroy()
+                    app.destroy()
+                    start_app()
+
+            del_button = CTkButton(del_emp, text='Deletar', text_color='#fff', font=("Ubuntu Bold", 12), command=del_empresa)
+            del_button.pack(padx=10, pady=10)
 
     # DEFAULT THEME & DEFAULT COLOR:
     default_theme = 'dark'
