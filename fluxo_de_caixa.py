@@ -1,6 +1,7 @@
 from customtkinter import *
 from csv_functions import *
-from os.path import isfile
+from os.path import isfile, exists
+from os import remove
 import pandas as pd
 
 # GLOBAIS:
@@ -22,11 +23,25 @@ def start_app():
     app.geometry("600x500")
     app.title('Fluxo de Caixa com Python')
 
+    class EmpresaCaixa(CTkToplevel):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.geometry("500x400")
+
+            self.label = CTkLabel(self, text="ToplevelWindow")
+            self.label.pack(padx=20, pady=20)
+
+    def gerenciar_empresa(empresa_nome):
+        print(empresa_nome)
+        empresa_window = EmpresaCaixa(app)
+        empresa_window.focus_force()
+
     def add_empresa_window():
         global app
         global empresa_csv_path
         global empresa_csv_table
         add_emp = CTkToplevel(app)
+        add_emp.transient(app)
         add_emp.geometry("400x300")
 
         title = CTkLabel(add_emp, text='Adicionar empresa', text_color='#fff', font=("Ubuntu Bold", 26))
@@ -50,7 +65,11 @@ def start_app():
             elif 255 <= len(new_empresa) <= 0:
                 name_status.configure(text='Digite entre 1 e 255 caracteres!')
             else:
+                new_empresa = new_empresa.upper()
                 register_empresa(empresa_csv_path, new_empresa)
+                with open(f'csv/{new_empresa}.csv', 'a') as f_caixa:
+                    f_caixa.write("Valor_Caixa")
+                    f_caixa.write("\n")
                 add_emp.destroy()
                 app.destroy()
                 start_app()
@@ -63,6 +82,7 @@ def start_app():
         global empresa_csv_path
         global empresa_csv_table
         del_emp = CTkToplevel(app)
+        del_emp.transient(app)
         del_emp.geometry("400x300")
 
         remove_title = CTkLabel(del_emp, text='Remover empresa', text_color='#fff', font=("Ubuntu Bold", 26))
@@ -93,7 +113,12 @@ def start_app():
                 elif 255 <= len(del_instance) <= 0:
                     name_status.configure(text='Digite entre 1 e 255 caracteres!')
                 else:
+                    del_instance = del_instance.upper()
                     deletar_empresa(empresa_csv_path, del_instance)
+                    if exists(f'csv/{del_instance}.csv'):
+                        remove(f'csv/{del_instance}.csv')
+                    else:
+                        print('Não foi possível remover o caixa da empresa!')
                     del_emp.destroy()
                     app.destroy()
                     start_app()
@@ -130,7 +155,7 @@ def start_app():
         zero_empresas.pack(padx=1, pady=1)
     else:
         for c in range(0, len(empresa_csv_table)):
-            empresa = CTkButton(app, text=empresa_csv_table["Empresa"][c], text_color='#fff', font=("Ubuntu Bold", 12))
+            empresa = CTkButton(app, text=empresa_csv_table["Empresa"][c], text_color='#fff', font=("Ubuntu Bold", 12), command=gerenciar_empresa)
             empresa.pack(padx=1, pady=1)
 
     empty_text = CTkLabel(app, text='')
