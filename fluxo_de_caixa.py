@@ -23,18 +23,13 @@ def start_app():
     app.geometry("600x500")
     app.title('Fluxo de Caixa com Python')
 
-    class EmpresaCaixa(CTkToplevel):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.geometry("500x400")
-
-            self.label = CTkLabel(self, text="ToplevelWindow")
-            self.label.pack(padx=20, pady=20)
-
     def gerenciar_empresa(empresa_nome):
         print(empresa_nome)
-        empresa_window = EmpresaCaixa(app)
-        empresa_window.focus_force()
+        empresa_caixa = CTkToplevel(app)
+        empresa_caixa.transient(app)
+        empresa_caixa.geometry('500x400')
+
+        titulo_empresa = CTkLabel
 
     def add_empresa_window():
         global app
@@ -155,7 +150,7 @@ def start_app():
         zero_empresas.pack(padx=1, pady=1)
     else:
         for c in range(0, len(empresa_csv_table)):
-            empresa = CTkButton(app, text=empresa_csv_table["Empresa"][c], text_color='#fff', font=("Ubuntu Bold", 12), command=gerenciar_empresa)
+            empresa = CTkButton(app, text=empresa_csv_table["Empresa"][c], text_color='#fff', font=("Ubuntu Bold", 12), command=lambda: gerenciar_empresa(empresa.cget('text')))
             empresa.pack(padx=1, pady=1)
 
     empty_text = CTkLabel(app, text='')
