@@ -41,8 +41,15 @@ def start_app():
         l1 = next(ler_csv)
         print(l1)
         r_set = [row for row in ler_csv]
+
+        count_row = 0
+        for linha in r_set:
+            r_set[count_row][1] = f'R${r_set[count_row][1]}'
+            r_set[count_row][1] = r_set[count_row][1].replace('.',',')
+            print(r_set[count_row][1])
+            count_row += 1
+
         r_set = r_set[::-1]
-        print(r_set)
 
         trv = ttk.Treeview(empresa_caixa, selectmode='browse')
         trv.pack()
