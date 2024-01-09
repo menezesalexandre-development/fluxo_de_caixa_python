@@ -2,7 +2,10 @@ from customtkinter import *
 from csv_functions import *
 from os.path import isfile, exists
 from os import remove
+from tkinter import ttk
+import tkinter
 import pandas as pd
+import csv
 
 # GLOBAIS:
 app = CTk()
@@ -29,7 +32,34 @@ def start_app():
         empresa_caixa.transient(app)
         empresa_caixa.geometry('500x400')
 
-        titulo_empresa = CTkLabel
+        titulo_empresa = CTkLabel(empresa_caixa, text=f'CAIXA DO {empresa_nome}', font=('Ubuntu Bold', 25), text_color='#fff')
+        titulo_empresa.pack(pady=15)
+
+        caixa_csv = open(f'csv/{empresa_nome}.csv')
+        ler_csv = csv.reader(caixa_csv)
+        l1 = []
+        l1 = next(ler_csv)
+        print(l1)
+        r_set = [row for row in ler_csv]
+        r_set = r_set[::-1]
+        print(r_set)
+
+        trv = ttk.Treeview(empresa_caixa, selectmode='browse')
+        trv.pack()
+        trv['height'] = 10
+        trv['show'] = 'headings'
+        trv['columns'] = l1
+
+        for i in l1:
+            trv.column(i, width=100, anchor='c')
+            trv.heading(i, text=i)
+
+        for dt in r_set:
+            v = [r for r in dt]
+            trv.insert('', 'end', iid=v[0], values=v)
+
+        realizar_caixa = CTkButton(empresa_caixa, text='Realizar novo caixa', font=('Ubuntu Bold', 12))
+        realizar_caixa.pack(pady=20)
 
     def add_empresa_window():
         global app
@@ -63,7 +93,7 @@ def start_app():
                 new_empresa = new_empresa.upper()
                 register_empresa(empresa_csv_path, new_empresa)
                 with open(f'csv/{new_empresa}.csv', 'a') as f_caixa:
-                    f_caixa.write("Valor_Caixa")
+                    f_caixa.write("Caixa,Dia,Mes,Ano")
                     f_caixa.write("\n")
                 add_emp.destroy()
                 app.destroy()
