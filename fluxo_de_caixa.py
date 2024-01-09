@@ -73,8 +73,23 @@ def start_app():
             title_nv_caixa = CTkLabel(add_caixa, text='REALIZAR NOVO CAIXA:', font=('Ubuntu Bold', 22), text_color='#fff')
             title_nv_caixa.pack(pady=5)
 
-            subtitle_nv_caixa = CTkLabel(add_caixa, text=f'Empresa: {nome_empresa}', font=('Ubuntu Bold', 15), text_color='#fff')
+            subtitle_nv_caixa = CTkLabel(add_caixa, text=f'Empresa: {nome_empresa} | Data: {current_day} de {current_month} de {current_year}', font=('Ubuntu Bold', 15), text_color='#fff')
             subtitle_nv_caixa.pack(pady=0)
+
+            label_vazia = CTkLabel(add_caixa, text='')
+            label_vazia.pack(pady=10)
+
+            valor_caixa_label = CTkLabel(add_caixa, text='Valor do Caixa:', text_color='#fff', font=('Ubuntu Bold', 10))
+            valor_caixa_label.pack()
+
+            valor_caixa_reais_label = CTkLabel(add_caixa, text='R$', text_color='#fff', font=('Ubuntu Bold', 12))
+            valor_caixa_reais_label.place(x=160, y=140)
+
+            valor_caixa_entry = CTkEntry(add_caixa, placeholder_text='Insira o valor do caixa', font=('Ubuntu Bold', 10), fg_color='#fff', text_color='#000')
+            valor_caixa_entry.pack()
+
+            valor_caixa_btn = CTkButton(add_caixa, text='Registrar caixa', text_color='#fff', font=('Ubuntu Bold', 12))
+            valor_caixa_btn.pack(pady=5)
 
         realizar_caixa = CTkButton(empresa_caixa, text='Realizar novo caixa', font=('Ubuntu Bold', 12), command=lambda nome_emp=empresa_nome: novo_caixa(nome_emp), text_color='#fff')
         realizar_caixa.pack(pady=15)

@@ -35,10 +35,11 @@ match current_month:
 current_year = date.today().year
 
 
-def registrar_caixa(filepath, caixa, dia, mes, ano):
+def registrar_caixa(filepath, caixa):
+    global current_day, current_month, current_year
     csv_table = pd.read_csv(filepath)
     new_id = len(csv_table['ID']) + 1
-    novo_caixa = f'{new_id},{caixa:.2f},{dia},{mes},{ano}'
+    novo_caixa = f'{new_id},{caixa:.2f},{current_day},{current_month},{current_year}'
 
     with open(filepath, 'a') as file:
         file.write("\n")
