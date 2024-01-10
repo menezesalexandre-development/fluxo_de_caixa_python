@@ -45,8 +45,8 @@ def start_app():
 
         count_row = 0
         for linha in r_set:
-            r_set[count_row][1] = f'R${r_set[count_row][1]}'
-            r_set[count_row][1] = r_set[count_row][1].replace('.', ',')
+            r_set[count_row][0] = f'R${r_set[count_row][0]}'
+            r_set[count_row][0] = r_set[count_row][0].replace('.', ',')
             count_row += 1
 
         r_set = r_set[::-1]
@@ -63,7 +63,7 @@ def start_app():
 
         for dt in r_set:
             v = [r for r in dt]
-            trv.insert('', 'end', iid=v[0], values=v)
+            trv.insert('', 'end', values=v)
 
         def novo_caixa(nome_empresa):
             add_caixa = CTkToplevel(empresa_caixa)
@@ -79,16 +79,26 @@ def start_app():
             label_vazia = CTkLabel(add_caixa, text='')
             label_vazia.pack(pady=10)
 
-            valor_caixa_label = CTkLabel(add_caixa, text='Valor do Caixa:', text_color='#fff', font=('Ubuntu Bold', 10))
+            valor_caixa_label = CTkLabel(add_caixa, text='Valor do Caixa:', text_color='#fff', font=('Ubuntu Bold', 15))
             valor_caixa_label.pack()
 
             valor_caixa_reais_label = CTkLabel(add_caixa, text='R$', text_color='#fff', font=('Ubuntu Bold', 12))
             valor_caixa_reais_label.place(x=160, y=140)
 
+            def enviar_caixa(filepath, valor_caixa):
+                if valor_caixa.isnumeric():
+                    valor_caixa = f'{float(valor_caixa):.2f}'
+                    registrar_caixa(filepath, valor_caixa)
+                    add_caixa.destroy()
+                elif valor_caixa == '':
+                    valor_caixa_label.configure(text='Campo obrigatório! Digite o valor do caixa:')
+                else:
+                    valor_caixa_label.configure(text='Digite um valor numérico')
+
             valor_caixa_entry = CTkEntry(add_caixa, placeholder_text='Insira o valor do caixa', font=('Ubuntu Bold', 10), fg_color='#fff', text_color='#000')
             valor_caixa_entry.pack()
 
-            valor_caixa_btn = CTkButton(add_caixa, text='Registrar caixa', text_color='#fff', font=('Ubuntu Bold', 12))
+            valor_caixa_btn = CTkButton(add_caixa, text='Registrar caixa', text_color='#fff', font=('Ubuntu Bold', 12), command=lambda file_csv=f'csv/{nome_empresa}.csv': enviar_caixa(file_csv, valor_caixa_entry.get()))
             valor_caixa_btn.pack(pady=5)
 
         realizar_caixa = CTkButton(empresa_caixa, text='Realizar novo caixa', font=('Ubuntu Bold', 12), command=lambda nome_emp=empresa_nome: novo_caixa(nome_emp), text_color='#fff')
@@ -127,8 +137,7 @@ def start_app():
                 new_empresa = new_empresa.upper()
                 register_empresa(empresa_csv_path, new_empresa)
                 with open(f'csv/{new_empresa}.csv', 'a') as f_caixa:
-                    f_caixa.write("ID,Caixa,Dia,Mes,Ano")
-                    f_caixa.write("\n")
+                    f_caixa.write("Caixa,Dia,Mes,Ano,Data")
                 add_emp.destroy()
                 app.destroy()
                 start_app()

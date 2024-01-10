@@ -1,9 +1,14 @@
 import pandas as pd
+from csv import reader
 from datetime import date
 
 current_day = date.today().day
 if len(str(current_day)) == 1:
     current_day = str(f'0{str(current_day)}')
+
+current_month_num = date.today().month
+if len(str(current_month_num)) == 1:
+    current_month_num = str(f'0{str(current_month_num)}')
 
 current_month = date.today().month
 match current_month:
@@ -37,13 +42,10 @@ current_year = date.today().year
 
 def registrar_caixa(filepath, caixa):
     global current_day, current_month, current_year
-    csv_table = pd.read_csv(filepath)
-    new_id = len(csv_table['ID']) + 1
-    novo_caixa = f'{new_id},{caixa:.2f},{current_day},{current_month},{current_year}'
 
     with open(filepath, 'a') as file:
         file.write("\n")
-        file.write(novo_caixa)
+        file.write(f'{caixa},{current_day},{current_month},{current_year},{current_year}-{current_month_num}-{current_day}')
 
 
 def check_empresas(filepath):
