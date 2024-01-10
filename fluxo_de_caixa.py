@@ -3,7 +3,6 @@ from csv_functions import *
 from os.path import isfile, exists
 from os import remove
 from tkinter import ttk
-import tkinter
 import pandas as pd
 import csv
 
@@ -35,6 +34,10 @@ def start_app():
         titulo_empresa = CTkLabel(empresa_caixa, text=f'CAIXA DO {empresa_nome}', font=('Ubuntu Bold', 25),
                                   text_color='#fff')
         titulo_empresa.pack(pady=15)
+
+        saldo_atual = calcular_saldo(f'csv/{empresa_nome}.csv')
+        saldo_empresa = CTkLabel(empresa_caixa, text=f'Saldo Atual: {saldo_atual}', font=('Ubuntu Bold', 15), text_color='#fff')
+        saldo_empresa.pack()
 
         caixa_csv = open(f'csv/{empresa_nome}.csv')
         ler_csv = csv.reader(caixa_csv)

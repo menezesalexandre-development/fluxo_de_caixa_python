@@ -40,6 +40,14 @@ match current_month:
 current_year = date.today().year
 
 
+def calcular_saldo(filepath):
+    table = pd.read_csv(filepath)
+    soma = table['Caixa'].sum()
+    soma = f'R${soma:.2f}'
+    soma = soma.replace('.', ',')
+    return soma
+
+
 def registrar_caixa(filepath, caixa):
     global current_day, current_month, current_year
 
