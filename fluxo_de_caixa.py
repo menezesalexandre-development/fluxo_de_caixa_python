@@ -25,19 +25,25 @@ def start_app():
     app.geometry("600x500")
     app.title('Fluxo de Caixa com Python')
 
-    def gerenciar_empresa(empresa_nome):
+    def gerenciar_empresa(empresa_nome, dd='', mm='', aaaa=''):
         print(empresa_nome)
         empresa_caixa = CTkToplevel(app)
         empresa_caixa.transient(app)
-        empresa_caixa.geometry('500x400')
+        empresa_caixa.geometry('600x500')
 
         titulo_empresa = CTkLabel(empresa_caixa, text=f'CAIXA DO {empresa_nome}', font=('Ubuntu Bold', 25),
                                   text_color='#fff')
-        titulo_empresa.pack(pady=15)
+        titulo_empresa.pack(pady=5)
 
         saldo_atual = calcular_saldo(f'csv/{empresa_nome}.csv')
         saldo_empresa = CTkLabel(empresa_caixa, text=f'Saldo Atual: {saldo_atual}', font=('Ubuntu Bold', 15), text_color='#fff')
         saldo_empresa.pack()
+
+        filtrar_data = CTkLabel(empresa_caixa, text='Filtrar caixa pela data:', font=('Ubuntu Bold', 12), text_color='#fff')
+        filtrar_data.pack(pady=4)
+
+        label_vazia = CTkLabel(empresa_caixa, text='')
+        label_vazia.pack(pady=5)
 
         caixa_csv = open(f'csv/{empresa_nome}.csv')
         ler_csv = csv.reader(caixa_csv)
@@ -45,6 +51,74 @@ def start_app():
         l1 = next(ler_csv)
         print(l1)
         r_set = [row for row in ler_csv]
+
+        def filtrar_data(dia='', mes='', ano=''):
+            empresa_caixa.destroy()
+            gerenciar_empresa(empresa_nome, dia, mes, ano)
+
+        if dd == '' and mm == '' and aaaa == '':
+            pass
+        else:
+            if dd == '':
+                pass
+            else:
+                contador = 0
+                limit = len(r_set)
+                for r in range(0, limit):
+                    if r_set[contador][1] != dd:
+                        r_set.pop(contador)
+                    else:
+                        contador += 1
+
+            if mm == '':
+                pass
+            else:
+                if len(mm) == 1:
+                    mm = f'0{mm}'
+                match mm:
+                    case '01':
+                        mm = 'Janeiro'
+                    case '02':
+                        mm = 'Fevereiro'
+                    case '03':
+                        mm = 'Março'
+                    case '04':
+                        mm = 'Abril'
+                    case '05':
+                        mm = 'Maio'
+                    case '06':
+                        mm = 'Junho'
+                    case '07':
+                        mm = 'Julho'
+                    case '08':
+                        mm = 'Agosto'
+                    case '09':
+                        mm = 'Setembro'
+                    case '10':
+                        mm = 'Outubro'
+                    case '11':
+                        mm = 'Novembro'
+                    case '12':
+                        mm = 'Dezembro'
+
+                limit = len(r_set)
+                contador = 0
+                for r in range(0, limit):
+                    if r_set[contador][2] != mm:
+                        r_set.pop(contador)
+                    else:
+                        contador += 1
+
+            if aaaa == '':
+                pass
+            else:
+                limit = len(r_set)
+                contador = 0
+                for r in range(0, limit):
+                    if r_set[contador][3] != aaaa:
+                        r_set.pop(contador)
+                    else:
+                        contador += 1
 
         count_row = 0
         for linha in r_set:
@@ -56,7 +130,7 @@ def start_app():
 
         trv = ttk.Treeview(empresa_caixa, selectmode='browse')
         trv.pack()
-        trv['height'] = 10
+        trv['height'] = 8
         trv['show'] = 'headings'
         trv['columns'] = l1
 
@@ -67,6 +141,19 @@ def start_app():
         for dt in r_set:
             v = [r for r in dt]
             trv.insert('', 'end', values=v)
+
+        filtro_entry_dia = CTkEntry(empresa_caixa, placeholder_text='Dia', font=('Ubuntu Bold', 12), width=36)
+        filtro_entry_dia.place(x=210, y=105)
+
+        filtro_entry_mes = CTkEntry(empresa_caixa, placeholder_text='Mês', font=('Ubuntu Bold', 12), width=36)
+        filtro_entry_mes.place(x=247, y=105)
+
+        filtro_entry_ano = CTkEntry(empresa_caixa, placeholder_text='Ano', font=('Ubuntu Bold', 12), width=46)
+        filtro_entry_ano.place(x=284, y=105)
+
+        filtro_btn_pesquisar = CTkButton(empresa_caixa, text='Filtrar', font=('Ubuntu Bold', 12), text_color='#fff',
+                                         width=50, command=lambda: filtrar_data(filtro_entry_dia.get(), filtro_entry_mes.get(), filtro_entry_ano.get()))
+        filtro_btn_pesquisar.place(x=330, y=105)
 
         def novo_caixa(nome_empresa):
             add_caixa = CTkToplevel(empresa_caixa)
