@@ -24,12 +24,14 @@ def start_app():
     app = CTk()
     app.geometry("600x500")
     app.title('Fluxo de Caixa com Python')
+    app.iconbitmap('./app_icon/favicon.ico')
 
     def gerenciar_empresa(empresa_nome, dd='', mm='', aaaa=''):
         print(empresa_nome)
         empresa_caixa = CTkToplevel(app)
         empresa_caixa.transient(app)
         empresa_caixa.geometry('600x500')
+        empresa_caixa.iconbitmap('./app_icon/favicon.ico')
 
         titulo_empresa = CTkLabel(empresa_caixa, text=f'CAIXA DO {empresa_nome}', font=('Ubuntu Bold', 25),
                                   text_color='#fff')
@@ -159,6 +161,7 @@ def start_app():
             add_caixa = CTkToplevel(empresa_caixa)
             add_caixa.transient(empresa_caixa)
             add_caixa.geometry('500x400')
+            add_caixa.iconbitmap('./app_icon/favicon.ico')
 
             title_nv_caixa = CTkLabel(add_caixa, text='REALIZAR NOVO CAIXA:', font=('Ubuntu Bold', 22), text_color='#fff')
             title_nv_caixa.pack(pady=5)
@@ -203,6 +206,7 @@ def start_app():
         add_emp = CTkToplevel(app)
         add_emp.transient(app)
         add_emp.geometry("400x300")
+        add_emp.iconbitmap('./app_icon/favicon.ico')
 
         title = CTkLabel(add_emp, text='Adicionar empresa', text_color='#fff', font=("Ubuntu Bold", 26))
         title.pack(pady=10)
@@ -245,6 +249,7 @@ def start_app():
         del_emp = CTkToplevel(app)
         del_emp.transient(app)
         del_emp.geometry("400x300")
+        del_emp.iconbitmap('./app_icon/favicon.ico')
 
         remove_title = CTkLabel(del_emp, text='Remover empresa', text_color='#fff', font=("Ubuntu Bold", 26))
         remove_title.pack(padx=10, pady=10)
