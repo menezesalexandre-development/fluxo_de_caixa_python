@@ -1,7 +1,6 @@
-Data do Caixa,Horário do Caixa,Valor do Caixa,Dia,Mes,Ano
-
-2023-12-20,10:54:48,90.0,20,Dezembro,2023
-2023-12-20,10:55:25,90.0,20,Dezembro,2023
-2023-12-20,10:57:8,90.0,20,Dezembro,2023
-2023-12-20,11:6:9,90.0,20,Dezembro,2023
-2023-12-20,11:22:4,90.0,20,Dezembro,2023
+Caixa,Dia,Mes,Ano,Data
+90.0,20,Dezembro,2023,2023-12-20
+90.0,21,Dezembro,2023,2023-12-21
+90.0,22,Dezembro,2023,2023-12-22
+90.0,23,Dezembro,2023,2023-12-23
+90.0,24,Dezembro,2023,2023-12-24
