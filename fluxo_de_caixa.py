@@ -3,8 +3,10 @@ from csv_functions import *
 from os.path import isfile, exists
 from os import remove
 from tkinter import ttk
+from tkinter import messagebox
 import pandas as pd
 import csv
+import signal
 
 # GLOBAIS:
 app = CTk()
@@ -24,7 +26,13 @@ def start_app():
     app = CTk()
     app.geometry("600x500")
     app.title('Fluxo de Caixa com Python')
+    app.resizable(width=False, height=False)
     app.iconbitmap('./app_icon/favicon.ico')
+
+    def fechar_janela():
+        if messagebox.askokcancel("Fechar", "Tem certeza que deseja sair?"):
+            app.destroy()
+            exit()
 
     def gerenciar_empresa(empresa_nome, dd='', mm='', aaaa=''):
         print(empresa_nome)
@@ -346,10 +354,8 @@ def start_app():
     else:
         remover_empresa_btn.configure(state='normal')
 
-    try:
-        app.mainloop()
-    except KeyboardInterrupt:
-        print('Programa interrompido')
+    app.protocol("WM_DELETE_WINDOW", fechar_janela)
+    app.mainloop()
 
 
 while True:
