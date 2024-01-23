@@ -204,8 +204,15 @@ def start_app():
             valor_caixa_btn = CTkButton(add_caixa, text='Registrar caixa', text_color='#fff', font=('Ubuntu Bold', 12), command=lambda file_csv=f'csv/{nome_empresa}.csv': enviar_caixa(file_csv, valor_caixa_entry.get(), nome_empresa))
             valor_caixa_btn.pack(pady=5)
 
-        realizar_caixa = CTkButton(empresa_caixa, text='Realizar novo caixa', font=('Ubuntu Bold', 12), command=lambda nome_emp=empresa_nome: novo_caixa(nome_emp), text_color='#fff')
-        realizar_caixa.pack(pady=15)
+        inserir_entrada = CTkButton(empresa_caixa, text='Inserir entrada', font=('Ubuntu Bold', 12),
+                                   command=lambda nome_emp=empresa_nome: novo_caixa(nome_emp), text_color='#fff',
+                                   fg_color='#17c400', hover_color='#108201')
+        inserir_entrada.place(x=150, y=340)
+
+        inserir_saida = CTkButton(empresa_caixa, text='Inserir saída', font=('Ubuntu Bold', 12), 
+                                   command=lambda nome_emp=empresa_nome: novo_caixa(nome_emp), text_color='#fff',
+                                   fg_color='#ff0000', hover_color='#820a01')
+        inserir_saida.place(x=300, y=340)
 
     def add_empresa_window():
         global app
@@ -346,7 +353,7 @@ def start_app():
     adicionar_empresa.pack(padx=1, pady=1)
 
     remover_empresa_btn = CTkButton(app, text='Remover empresa -', text_color='#fff', font=("Ubuntu Bold", 12),
-                                    fg_color='#ff0000', state='normal', command=del_empresa_window)
+                                    fg_color='#ff0000', state='normal', command=del_empresa_window, hover_color='#820a01')
     remover_empresa_btn.pack(padx=1, pady=1)
 
     if len(empresa_csv_table) == 0:
