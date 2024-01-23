@@ -201,7 +201,9 @@ def start_app():
             valor_caixa_entry = CTkEntry(add_caixa, placeholder_text='Insira o valor do caixa', font=('Ubuntu Bold', 10), fg_color='#fff', text_color='#000')
             valor_caixa_entry.pack()
 
-            valor_caixa_btn = CTkButton(add_caixa, text='Registrar caixa', text_color='#fff', font=('Ubuntu Bold', 12), command=lambda file_csv=f'csv/{nome_empresa}.csv': enviar_caixa(file_csv, valor_caixa_entry.get(), nome_empresa))
+            valor_caixa_btn = CTkButton(add_caixa, text='Registrar caixa', text_color='#fff', font=('Ubuntu Bold', 12),
+                                        command=lambda file_csv=f'csv/{nome_empresa}.csv': enviar_caixa(file_csv, valor_caixa_entry.get(), nome_empresa),
+                                        fg_color='#17c400', hover_color='#108201')
             valor_caixa_btn.pack(pady=5)
 
         inserir_entrada = CTkButton(empresa_caixa, text='Inserir entrada', font=('Ubuntu Bold', 12),
