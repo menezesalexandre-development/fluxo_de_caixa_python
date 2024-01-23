@@ -38,7 +38,7 @@ def start_app():
         print(empresa_nome)
         empresa_caixa = CTkToplevel(app)
         empresa_caixa.transient(app)
-        empresa_caixa.geometry('800x700')
+        empresa_caixa.geometry('800x550')
         empresa_caixa.iconbitmap('./app_icon/favicon.ico')
 
         titulo_empresa = CTkLabel(empresa_caixa, text=f'CAIXA DO {empresa_nome}', font=('Ubuntu Bold', 25),
@@ -73,14 +73,16 @@ def start_app():
 
         if dd == '' and mm == '' and aaaa == '':
             pass
+            filtro_ativo = False
         else:
+            filtro_ativo = True
             if dd == '':
                 pass
             else:
                 contador = 0
                 limit = len(r_set)
                 for r in range(0, limit):
-                    if r_set[contador][1] != dd:
+                    if r_set[contador][2] != dd:
                         r_set.pop(contador)
                     else:
                         contador += 1
@@ -96,7 +98,7 @@ def start_app():
                     case '02':
                         mm = 'Fevereiro'
                     case '03':
-                        mm = 'Março'
+                        mm = 'Marco'
                     case '04':
                         mm = 'Abril'
                     case '05':
@@ -119,7 +121,7 @@ def start_app():
                 limit = len(r_set)
                 contador = 0
                 for r in range(0, limit):
-                    if r_set[contador][2] != mm:
+                    if r_set[contador][3] != mm:
                         r_set.pop(contador)
                     else:
                         contador += 1
@@ -130,7 +132,7 @@ def start_app():
                 limit = len(r_set)
                 contador = 0
                 for r in range(0, limit):
-                    if r_set[contador][3] != aaaa:
+                    if r_set[contador][4] != aaaa:
                         r_set.pop(contador)
                     else:
                         contador += 1
@@ -159,17 +161,24 @@ def start_app():
             trv.insert('', 'end', values=v)
 
         filtro_entry_dia = CTkEntry(empresa_caixa, placeholder_text='Dia', font=('Ubuntu Bold', 12), width=36)
-        filtro_entry_dia.place(x=310, y=135)
+        filtro_entry_dia.place(x=272, y=135)
 
         filtro_entry_mes = CTkEntry(empresa_caixa, placeholder_text='Mês', font=('Ubuntu Bold', 12), width=36)
-        filtro_entry_mes.place(x=347, y=135)
+        filtro_entry_mes.place(x=309, y=135)
 
         filtro_entry_ano = CTkEntry(empresa_caixa, placeholder_text='Ano', font=('Ubuntu Bold', 12), width=46)
-        filtro_entry_ano.place(x=384, y=135)
+        filtro_entry_ano.place(x=346, y=135)
 
         filtro_btn_pesquisar = CTkButton(empresa_caixa, text='Filtrar', font=('Ubuntu Bold', 12), text_color='#fff',
                                          width=50, command=lambda: filtrar_data(filtro_entry_dia.get(), filtro_entry_mes.get(), filtro_entry_ano.get()))
-        filtro_btn_pesquisar.place(x=430, y=135)
+        filtro_btn_pesquisar.place(x=394, y=135)
+
+        remover_filtro = CTkButton(empresa_caixa, text='Remover filtro', font=('Ubuntu Bold', 12), text_color='#fff',
+                                   fg_color='#ff0000', hover_color='#820a01', command=lambda: filtrar_data('', '', ''),
+                                   width=80)
+        remover_filtro.place(x=449, y=135)
+        if not filtro_ativo:
+            remover_filtro.configure(state='disabled', fg_color='#820a01')
 
         title_nv_caixa = CTkLabel(empresa_caixa, text='REALIZAR NOVO CAIXA:', font=('Ubuntu Bold', 22), text_color='#fff')
         title_nv_caixa.pack(pady=5)
