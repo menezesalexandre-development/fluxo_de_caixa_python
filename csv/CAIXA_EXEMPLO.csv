@@ -1,5 +1,5 @@
 Valor,Tipo,Dia,Mes,Ano,Data
-90.0,Entrada,15,Março,2002,2002-03-15
+90.0,Entrada,15,Marco,2002,2002-03-15
 90.0,Entrada,23,Novembro,2004,2004-11-23
 90.0,Entrada,15,Dezembro,2010,2010-12-15
 90.0,Entrada,24,Dezembro,2023,2023-12-24
@@ -7,3 +7,5 @@ Valor,Tipo,Dia,Mes,Ano,Data
 -10.00,Saida,23,Janeiro,2024,2024-01-23
 15.00,Entrada,23,Janeiro,2024,2024-01-23
 -20.00,Saida,23,Janeiro,2024,2024-01-23
+30.00,Entrada,23,Janeiro,2024,2024-01-23
+-15.00,Saida,23,Janeiro,2024,2024-01-23
