@@ -38,12 +38,17 @@ def start_app():
         print(empresa_nome)
         empresa_caixa = CTkToplevel(app)
         empresa_caixa.transient(app)
-        empresa_caixa.geometry('600x500')
+        empresa_caixa.geometry('800x700')
         empresa_caixa.iconbitmap('./app_icon/favicon.ico')
 
         titulo_empresa = CTkLabel(empresa_caixa, text=f'CAIXA DO {empresa_nome}', font=('Ubuntu Bold', 25),
                                   text_color='#fff')
         titulo_empresa.pack(pady=5)
+
+        subtitle_nv_caixa = CTkLabel(empresa_caixa,
+                                     text=f'Empresa: {empresa_nome} | Data: {current_day} de {current_month} de {current_year}',
+                                     font=('Ubuntu Bold', 15), text_color='#fff')
+        subtitle_nv_caixa.pack(pady=0)
 
         saldo_atual = calcular_saldo(f'csv/{empresa_nome}.csv')
         saldo_empresa = CTkLabel(empresa_caixa, text=f'Saldo Atual: {saldo_atual}', font=('Ubuntu Bold', 15), text_color='#fff')
@@ -134,6 +139,7 @@ def start_app():
         for linha in r_set:
             r_set[count_row][0] = f'R${r_set[count_row][0]}'
             r_set[count_row][0] = r_set[count_row][0].replace('.', ',')
+            r_set[count_row][0] = r_set[count_row][0].replace('-', '')
             count_row += 1
 
         r_set = r_set[::-1]
@@ -153,17 +159,17 @@ def start_app():
             trv.insert('', 'end', values=v)
 
         filtro_entry_dia = CTkEntry(empresa_caixa, placeholder_text='Dia', font=('Ubuntu Bold', 12), width=36)
-        filtro_entry_dia.place(x=210, y=105)
+        filtro_entry_dia.place(x=310, y=135)
 
         filtro_entry_mes = CTkEntry(empresa_caixa, placeholder_text='Mês', font=('Ubuntu Bold', 12), width=36)
-        filtro_entry_mes.place(x=247, y=105)
+        filtro_entry_mes.place(x=347, y=135)
 
         filtro_entry_ano = CTkEntry(empresa_caixa, placeholder_text='Ano', font=('Ubuntu Bold', 12), width=46)
-        filtro_entry_ano.place(x=284, y=105)
+        filtro_entry_ano.place(x=384, y=135)
 
         filtro_btn_pesquisar = CTkButton(empresa_caixa, text='Filtrar', font=('Ubuntu Bold', 12), text_color='#fff',
                                          width=50, command=lambda: filtrar_data(filtro_entry_dia.get(), filtro_entry_mes.get(), filtro_entry_ano.get()))
-        filtro_btn_pesquisar.place(x=330, y=105)
+        filtro_btn_pesquisar.place(x=430, y=135)
 
         def novo_caixa(nome_empresa):
             add_caixa = CTkToplevel(empresa_caixa)
@@ -201,20 +207,55 @@ def start_app():
             valor_caixa_entry = CTkEntry(add_caixa, placeholder_text='Insira o valor do caixa', font=('Ubuntu Bold', 10), fg_color='#fff', text_color='#000')
             valor_caixa_entry.pack()
 
-            valor_caixa_btn = CTkButton(add_caixa, text='Registrar caixa', text_color='#fff', font=('Ubuntu Bold', 12),
+            registrar_entrada = CTkButton(add_caixa, text='Registrar entrada', text_color='#fff', font=('Ubuntu Bold', 12),
                                         command=lambda file_csv=f'csv/{nome_empresa}.csv': enviar_caixa(file_csv, valor_caixa_entry.get(), nome_empresa),
                                         fg_color='#17c400', hover_color='#108201')
-            valor_caixa_btn.pack(pady=5)
+            registrar_entrada.pack(pady=5)
+
+        title_nv_caixa = CTkLabel(empresa_caixa, text='REALIZAR NOVO CAIXA:', font=('Ubuntu Bold', 22), text_color='#fff')
+        title_nv_caixa.pack(pady=5)
+
+        valor_caixa_label = CTkLabel(empresa_caixa, text='Valor do Caixa:', text_color='#fff', font=('Ubuntu Bold', 15))
+        valor_caixa_label.pack()
+
+        valor_caixa_reais_label = CTkLabel(empresa_caixa, text='R$', text_color='#fff', font=('Ubuntu Bold', 12))
+        valor_caixa_reais_label.place(x=310, y=423)
+
+        valor_caixa_entry = CTkEntry(empresa_caixa, placeholder_text='Insira o valor do caixa', font=('Ubuntu Bold', 10),
+                                     fg_color='#fff', text_color='#000')
+        valor_caixa_entry.pack()
+
+        def enviar_caixa(filepath, valor_caixa, nome_emp):
+            if valor_caixa.isnumeric():
+                valor_caixa = f'{float(valor_caixa):.2f}'
+                registrar_caixa(filepath, valor_caixa, 'Entrada')
+                empresa_caixa.destroy()
+                gerenciar_empresa(nome_emp)
+            elif valor_caixa == '':
+                valor_caixa_label.configure(text='Campo obrigatório! Digite o valor do caixa:')
+            else:
+                valor_caixa_label.configure(text='Digite um valor numérico')
+
+        def enviar_saida(filepath, valor_caixa, nome_emp):
+            if valor_caixa.isnumeric():
+                valor_caixa = f'-{float(valor_caixa):.2f}'
+                registrar_caixa(filepath, valor_caixa, 'Saida')
+                empresa_caixa.destroy()
+                gerenciar_empresa(nome_emp)
+            elif valor_caixa == '':
+                valor_caixa_label.configure(text='Campo obrigatório! Digite o valor do caixa:')
+            else:
+                valor_caixa_label.configure(text='Digite um valor numérico')
 
         inserir_entrada = CTkButton(empresa_caixa, text='Inserir entrada', font=('Ubuntu Bold', 12),
-                                   command=lambda nome_emp=empresa_nome: novo_caixa(nome_emp), text_color='#fff',
+                                   command=lambda file_csv=f'csv/{empresa_nome}.csv': enviar_caixa(file_csv, valor_caixa_entry.get(), empresa_nome), text_color='#fff',
                                    fg_color='#17c400', hover_color='#108201')
-        inserir_entrada.place(x=150, y=340)
+        inserir_entrada.place(x=250, y=465)
 
         inserir_saida = CTkButton(empresa_caixa, text='Inserir saída', font=('Ubuntu Bold', 12), 
-                                   command=lambda nome_emp=empresa_nome: novo_caixa(nome_emp), text_color='#fff',
+                                   command=lambda file_csv=f'csv/{empresa_nome}.csv': enviar_saida(file_csv, valor_caixa_entry.get(), empresa_nome), text_color='#fff',
                                    fg_color='#ff0000', hover_color='#820a01')
-        inserir_saida.place(x=300, y=340)
+        inserir_saida.place(x=400, y=465)
 
     def add_empresa_window():
         global app
@@ -250,7 +291,7 @@ def start_app():
                 new_empresa = new_empresa.upper()
                 register_empresa(empresa_csv_path, new_empresa)
                 with open(f'csv/{new_empresa}.csv', 'a') as f_caixa:
-                    f_caixa.write("Caixa,Dia,Mes,Ano,Data")
+                    f_caixa.write("Valor,Tipo,Dia,Mes,Ano,Data")
                 add_emp.destroy()
                 app.destroy()
                 start_app()

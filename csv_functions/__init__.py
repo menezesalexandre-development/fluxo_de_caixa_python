@@ -42,18 +42,18 @@ current_year = date.today().year
 
 def calcular_saldo(filepath):
     table = pd.read_csv(filepath)
-    soma = table['Caixa'].sum()
+    soma = table['Valor'].sum()
     soma = f'R${soma:.2f}'
     soma = soma.replace('.', ',')
     return soma
 
 
-def registrar_caixa(filepath, caixa):
+def registrar_caixa(filepath, caixa, tipo):
     global current_day, current_month, current_year
 
     with open(filepath, 'a') as file:
         file.write("\n")
-        file.write(f'{caixa},{current_day},{current_month},{current_year},{current_year}-{current_month_num}-{current_day}')
+        file.write(f'{caixa},{tipo},{current_day},{current_month},{current_year},{current_year}-{current_month_num}-{current_day}')
 
 
 def check_empresas(filepath):
