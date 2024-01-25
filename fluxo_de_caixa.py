@@ -38,7 +38,7 @@ def start_app():
         print(empresa_nome)
         empresa_caixa = CTkToplevel(app)
         empresa_caixa.transient(app)
-        empresa_caixa.geometry('800x550')
+        empresa_caixa.geometry('800x600')
         empresa_caixa.iconbitmap('./app_icon/favicon.ico')
 
         titulo_empresa = CTkLabel(empresa_caixa, text=f'CAIXA DO {empresa_nome}', font=('Ubuntu Bold', 25),
@@ -193,10 +193,11 @@ def start_app():
                                      fg_color='#fff', text_color='#000')
         valor_caixa_entry.pack()
 
-        def enviar_caixa(filepath, valor_caixa, nome_emp):
-            if valor_caixa.isnumeric():
+        def enviar_caixa(filepath, valor_caixa, nome_emp, entry_day, entry_month, entry_year):
+            valor_caixa = valor_caixa.replace(',', '.')
+            if valor_caixa.isnumeric() or is_float(valor_caixa):
                 valor_caixa = f'{float(valor_caixa):.2f}'
-                registrar_caixa(filepath, valor_caixa, 'Entrada')
+                registrar_caixa(filepath, valor_caixa, 'Entrada', entry_day, entry_month, entry_year)
                 empresa_caixa.destroy()
                 gerenciar_empresa(nome_emp)
             elif valor_caixa == '':
@@ -204,10 +205,10 @@ def start_app():
             else:
                 valor_caixa_label.configure(text='Digite um valor numérico')
 
-        def enviar_saida(filepath, valor_caixa, nome_emp):
+        def enviar_saida(filepath, valor_caixa, nome_emp, entry_day, entry_month, entry_year):
             if valor_caixa.isnumeric():
                 valor_caixa = f'-{float(valor_caixa):.2f}'
-                registrar_caixa(filepath, valor_caixa, 'Saida')
+                registrar_caixa(filepath, valor_caixa, 'Saida', entry_day, entry_month, entry_year)
                 empresa_caixa.destroy()
                 gerenciar_empresa(nome_emp)
             elif valor_caixa == '':
@@ -215,15 +216,27 @@ def start_app():
             else:
                 valor_caixa_label.configure(text='Digite um valor numérico')
 
+        data_caixa_label = CTkLabel(empresa_caixa, text='Data do Caixa:', font=('Ubuntu Bold', 12), text_color='#fff')
+        data_caixa_label.place(x=272, y=465)
+
+        data_entry_dia = CTkEntry(empresa_caixa, placeholder_text='Dia', font=('Ubuntu Bold', 12), width=36)
+        data_entry_dia.place(x=360, y=465)
+
+        data_entry_mes = CTkEntry(empresa_caixa, placeholder_text='Mês', font=('Ubuntu Bold', 12), width=36)
+        data_entry_mes.place(x=397, y=465)
+
+        data_entry_ano = CTkEntry(empresa_caixa, placeholder_text='Ano', font=('Ubuntu Bold', 12), width=46)
+        data_entry_ano.place(x=435, y=465)
+
         inserir_entrada = CTkButton(empresa_caixa, text='Inserir entrada', font=('Ubuntu Bold', 12),
-                                   command=lambda file_csv=f'csv/{empresa_nome}.csv': enviar_caixa(file_csv, valor_caixa_entry.get(), empresa_nome), text_color='#fff',
+                                   command=lambda file_csv=f'csv/{empresa_nome}.csv': enviar_caixa(file_csv, valor_caixa_entry.get(), empresa_nome, data_entry_dia.get(), data_entry_mes.get(), data_entry_ano.get()), text_color='#fff',
                                    fg_color='#17c400', hover_color='#108201')
-        inserir_entrada.place(x=250, y=465)
+        inserir_entrada.place(x=250, y=505)
 
         inserir_saida = CTkButton(empresa_caixa, text='Inserir saída', font=('Ubuntu Bold', 12), 
-                                   command=lambda file_csv=f'csv/{empresa_nome}.csv': enviar_saida(file_csv, valor_caixa_entry.get(), empresa_nome), text_color='#fff',
+                                   command=lambda file_csv=f'csv/{empresa_nome}.csv': enviar_saida(file_csv, valor_caixa_entry.get(), empresa_nome, data_entry_dia.get(), data_entry_mes.get(), data_entry_ano.get()), text_color='#fff',
                                    fg_color='#ff0000', hover_color='#820a01')
-        inserir_saida.place(x=400, y=465)
+        inserir_saida.place(x=400, y=505)
 
     def add_empresa_window():
         global app

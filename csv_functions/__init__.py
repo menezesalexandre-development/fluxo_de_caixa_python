@@ -17,7 +17,7 @@ match current_month:
     case 2:
         current_month = 'Fevereiro'
     case 3:
-        current_month = 'Março'
+        current_month = 'Marco'
     case 4:
         current_month = 'Abril'
     case 5:
@@ -40,6 +40,14 @@ match current_month:
 current_year = date.today().year
 
 
+def is_float(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+
+
 def calcular_saldo(filepath):
     table = pd.read_csv(filepath)
     soma = table['Valor'].sum()
@@ -48,12 +56,46 @@ def calcular_saldo(filepath):
     return soma
 
 
-def registrar_caixa(filepath, caixa, tipo):
+def registrar_caixa(filepath, caixa, tipo, entry_day, entry_month, entry_year):
     global current_day, current_month, current_year
+
+    entry_day = entry_day
+    if len(str(entry_day)) == 1:
+        entry_day = str(f'0{str(entry_day)}')
+
+    entry_month_num = entry_month
+    if len(str(entry_month_num)) == 1:
+        entry_month_num = str(f'0{str(entry_month_num)}')
+
+    match entry_month_num:
+        case '01':
+            entry_month = 'Janeiro'
+        case '02':
+            entry_month = 'Fevereiro'
+        case '03':
+            entry_month = 'Marco'
+        case '04':
+            entry_month = 'Abril'
+        case '05':
+            entry_month = 'Maio'
+        case '06':
+            entry_month = 'Junho'
+        case '07':
+            entry_month = 'Julho'
+        case '08':
+            entry_month = 'Agosto'
+        case '09':
+            entry_month = 'Setembro'
+        case '10':
+            entry_month = 'Outubro'
+        case '11':
+            entry_month = 'Novembro'
+        case '12':
+            entry_month = 'Dezembro'
 
     with open(filepath, 'a') as file:
         file.write("\n")
-        file.write(f'{caixa},{tipo},{current_day},{current_month},{current_year},{current_year}-{current_month_num}-{current_day}')
+        file.write(f'{caixa},{tipo},{entry_day},{entry_month},{entry_year},{entry_year}-{entry_month_num}-{entry_day}')
 
 
 def check_empresas(filepath):
