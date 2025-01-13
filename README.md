@@ -10,8 +10,8 @@
 
 </div>
 
-<h3 align="justify">Programa de fluxo de caixa intuitivo e eficiente, ideal para empresas que buscam simplicidade no controle financeiro. Permite registrar e excluir movimentações financeiras de forma prática, enquanto calcula automaticamente o saldo total com base nos registros. Desenvolvido em Python com interface gráfica amigável (CustomTkinter), integração com tabela CSV e suporte para análise de dados avançada com Pandas, garantindo confiabilidade, insights estratégicos e facilidade no gerenciamento diário das finanças.
-</h3>
+<p align="justify">Programa de fluxo de caixa intuitivo e eficiente, ideal para empresas que buscam simplicidade no controle financeiro. Permite registrar e excluir movimentações financeiras de forma prática, enquanto calcula automaticamente o saldo total com base nos registros. Desenvolvido em Python com interface gráfica amigável (CustomTkinter), integração com tabela CSV e suporte para análise de dados avançada com Pandas, garantindo confiabilidade, insights estratégicos e facilidade no gerenciamento diário das finanças.
+</p>
 
 <div align="center">
  
